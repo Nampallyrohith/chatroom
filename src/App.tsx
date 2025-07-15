@@ -9,6 +9,7 @@ import Dashboard from "./components/pages/Dashboard";
 import PublicOnlyRoute from "./shared/PublicOnlyRoute";
 import ProtectedRoute from "./shared/ProtectedRoute";
 import Wrapper from "./shared/Wrapper";
+import Chatroom from "./components/pages/Chatroom";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           }
         >
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/chatroom/:id" element={<Chatroom />} />
         </Route>
       </Routes>
     </Router>
