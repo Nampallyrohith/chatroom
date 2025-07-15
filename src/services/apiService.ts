@@ -11,7 +11,7 @@ export const fetchData = async <T>(
   method: "GET" | "POST" | "PUT" | "DELETE" = "GET",
   body?: unknown
 ): Promise<ApiResponse<T>> => {
-  const token = localStorage.getItem("");
+  const token = localStorage.getItem("loggedIn");
 
   const headers: HeadersInit = {
     "Content-Type": "application/json",
