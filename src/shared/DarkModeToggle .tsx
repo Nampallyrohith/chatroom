@@ -22,11 +22,8 @@ const DarkModeToggle = () => {
   }, [dark]);
 
   return (
-    <button
-      onClick={() => setDark(!dark)}
-      className="text-sm px-3 py-1 border rounded dark:border-gray-600"
-    >
-      {dark ? "🌙 Dark" : "☀️ Light"}
+    <button onClick={() => setDark(!dark)} className="text-sm px-3 py-1 cursor-pointer">
+      {dark ? "🌙" : "☀️"}
     </button>
   );
 };
