@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import type { Message } from "../../models/typeDefinitions";
 import { toast } from "sonner";
 import Loader from "../../shared/Loader";
-import { SendHorizonal } from "lucide-react";
+import { ArrowLeft, SendHorizonal } from "lucide-react";
 import { FileUpload } from "../../shared/FileUpload";
 
 const Chatroom = () => {
@@ -14,6 +14,7 @@ const Chatroom = () => {
   const chatEndRef = useRef<HTMLDivElement | null>(null);
   const [hasLoaded, setHasLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
@@ -95,7 +96,10 @@ const Chatroom = () => {
   }
   return (
     <div className="flex flex-col h-screen w-full bg-white text-black dark:bg-gray-900 dark:text-white relative">
-      <header className="p-4 border-b border-gray-200 dark:border-gray-700 font-bold text-lg">
+      <header className="p-4 border-b border-gray-200 dark:border-gray-700 font-bold text-lg flex items-center gap-5">
+        <button type="button" onClick={() => navigate(-1)}>
+          <ArrowLeft />
+        </button>
         Chatroom: {id}
       </header>
 
@@ -124,7 +128,15 @@ const Chatroom = () => {
               }`}
               onClick={() => copyToClipboard(msg.content)}
             >
-              <p>{msg.content}</p>
+              <p
+                className={`${
+                  msg.role === "user"
+                    ? " dark:text-black"
+                    : "text-gray-700 dark:text-white"
+                }`}
+              >
+                {msg.content}
+              </p>
               {msg.image && (
                 <img
                   src={msg.image}
@@ -132,7 +144,13 @@ const Chatroom = () => {
                   className="w-40 h-auto mt-2 rounded-md border"
                 />
               )}
-              <span className="text-xs text-gray-500 dark:text-gray-300 mt-1">
+              <span
+                className={`${
+                  msg.role === "user"
+                    ? " dark:text-black"
+                    : "text-gray-700 dark:text-white"
+                } text-xs mt-1`}
+              >
                 {msg.timestamp}
               </span>
               {/* Hover message */}
