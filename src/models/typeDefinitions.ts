@@ -16,3 +16,11 @@ export interface FormattedCountry {
   code: string;
   flag: string;
 }
+
+export type Message = {
+  id: string;
+  role: "user" | "ai";
+  content: string;
+  timestamp: string;
+  image?: string;
+};
