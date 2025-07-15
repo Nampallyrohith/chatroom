@@ -2,6 +2,7 @@ import { SearchIcon, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
+import Loader from "../../shared/Loader";
 
 const Dashboard = () => {
   const [chatrooms, setChatrooms] = useState<string[]>([]);
@@ -9,6 +10,7 @@ const Dashboard = () => {
   const [newChatroom, setNewChatroom] = useState("");
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [loading, setLoading] = useState(true);
 
   // Load chatrooms from localStorage
   useEffect(() => {
@@ -18,6 +20,7 @@ const Dashboard = () => {
       setChatrooms(parsed);
       setFilteredChatrooms(parsed);
     }
+    setTimeout(() => setLoading(false), 1000);
   }, []);
 
   // Debounce search input
@@ -53,6 +56,10 @@ const Dashboard = () => {
     localStorage.setItem("chatrooms", JSON.stringify(updated));
     toast.success("Deleted Chatroom.");
   };
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="p-6 bg-white text-black dark:bg-gray-900 dark:text-white min-h-screen">

@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { Message } from "../../models/typeDefinitions";
+import { toast } from "sonner";
+import Loader from "../../shared/Loader";
+import { SendHorizonal } from "lucide-react";
+import { FileUpload } from "../../shared/FileUpload";
 
 const Chatroom = () => {
   const { id } = useParams();
@@ -9,16 +13,19 @@ const Chatroom = () => {
   const [isTyping, setIsTyping] = useState(false);
   const chatEndRef = useRef<HTMLDivElement | null>(null);
   const [hasLoaded, setHasLoaded] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
+    setLoading(true);
     if (!id) return;
     const stored = localStorage.getItem(`chat-${id}`);
     if (stored) {
       try {
         const parsed: Message[] = JSON.parse(stored);
         setMessages(parsed);
+        setTimeout(() => setLoading(false), 500);
       } catch (e) {
         console.error("Failed to parse messages from localStorage", e);
       }
@@ -51,6 +58,7 @@ const Chatroom = () => {
     };
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
+    toast.success("Message sent!");
     setIsTyping(true);
 
     setTimeout(() => {
@@ -82,6 +90,9 @@ const Chatroom = () => {
     navigator.clipboard.writeText(text);
   };
 
+  if (loading) {
+    return <Loader />;
+  }
   return (
     <div className="flex flex-col h-screen w-full bg-white text-black dark:bg-gray-900 dark:text-white relative">
       <header className="p-4 border-b border-gray-200 dark:border-gray-700 font-bold text-lg">
@@ -141,25 +152,21 @@ const Chatroom = () => {
         <div ref={chatEndRef} />
       </div>
 
-      <div className="p-4 sticky bottom-0 border-t border-gray-200 dark:border-gray-700 flex gap-2 bg-white dark:bg-gray-900">
+      <div className="p-4 w-full flex-wrap sticky bottom-0 border-t h-20 border-gray-200 dark:border-gray-700 flex items-center gap-2 bg-white dark:bg-gray-900">
         <input
-          className="flex-1 border border-gray-300 dark:border-gray-600 rounded px-2 bg-white dark:bg-gray-800 text-black dark:text-white"
+          className="flex-1 border border-gray-300 h-full dark:border-gray-600 rounded px-2 bg-white dark:bg-gray-800 text-black dark:text-white"
           placeholder="Type a message..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSend()}
         />
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleImageUpload}
-          className="text-sm border border-gray-300 dark:border-gray-600 px-2 py-1 rounded bg-white dark:bg-gray-800 text-black dark:text-white"
-        />
+        <FileUpload handleImageUpload={handleImageUpload} />
+
         <button
           onClick={handleSend}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition"
+          className="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full transition"
         >
-          Send
+          <SendHorizonal size={20} />
         </button>
       </div>
     </div>
