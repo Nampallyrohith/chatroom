@@ -83,12 +83,15 @@ const Chatroom = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen w-full">
-      <header className="p-4 border-b font-bold text-lg">Chatroom: {id}</header>
+    <div className="flex flex-col h-screen w-full bg-white text-black dark:bg-gray-900 dark:text-white relative">
+      <header className="p-4 border-b border-gray-200 dark:border-gray-700 font-bold text-lg">
+        Chatroom: {id}
+      </header>
+
       <div className="flex flex-col w-full h-full overflow-y-auto p-4 space-y-2">
         {messages.length === 0 ? (
           <div className="flex items-center justify-center h-full">
-            <div className="text-center border rounded-lg p-6 bg-gray-50 dark:bg-gray-800">
+            <div className="text-center border border-gray-200 dark:border-gray-700 rounded-lg p-6 bg-gray-50 dark:bg-gray-800">
               <h2 className="text-xl font-semibold mb-2 text-gray-600 dark:text-gray-300">
                 Welcome to Gemini 👋
               </h2>
@@ -105,8 +108,8 @@ const Chatroom = () => {
               key={i}
               className={`group relative p-2 rounded-md max-w-xs flex flex-col cursor-pointer ${
                 msg.role === "user"
-                  ? "bg-blue-100 self-end"
-                  : "bg-gray-200 self-start"
+                  ? "bg-blue-100 dark:bg-blue-300 self-end"
+                  : "bg-gray-200 dark:bg-gray-700 self-start"
               }`}
               onClick={() => copyToClipboard(msg.content)}
             >
@@ -115,10 +118,12 @@ const Chatroom = () => {
                 <img
                   src={msg.image}
                   alt="uploaded"
-                  className="w-40 h-auto mt-2 rounded-md"
+                  className="w-40 h-auto mt-2 rounded-md border"
                 />
               )}
-              <span className="text-xs text-gray-500">{msg.timestamp}</span>
+              <span className="text-xs text-gray-500 dark:text-gray-300 mt-1">
+                {msg.timestamp}
+              </span>
               {/* Hover message */}
               <span className="absolute -top-5 right-0 text-xs text-gray-400 hidden group-hover:block">
                 Click to copy
@@ -128,13 +133,17 @@ const Chatroom = () => {
         )}
 
         {isTyping && (
-          <p className="text-sm text-gray-400">Gemini is typing...</p>
+          <p className="text-sm text-gray-400 dark:text-gray-300">
+            Gemini is typing...
+          </p>
         )}
+
         <div ref={chatEndRef} />
       </div>
-      <div className="p-4 border-t flex gap-2">
+
+      <div className="p-4 sticky bottom-0 border-t border-gray-200 dark:border-gray-700 flex gap-2 bg-white dark:bg-gray-900">
         <input
-          className="flex-1 border rounded px-2"
+          className="flex-1 border border-gray-300 dark:border-gray-600 rounded px-2 bg-white dark:bg-gray-800 text-black dark:text-white"
           placeholder="Type a message..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
@@ -144,12 +153,11 @@ const Chatroom = () => {
           type="file"
           accept="image/*"
           onChange={handleImageUpload}
-          className="text-sm border"
+          className="text-sm border border-gray-300 dark:border-gray-600 px-2 py-1 rounded bg-white dark:bg-gray-800 text-black dark:text-white"
         />
-
         <button
           onClick={handleSend}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition"
         >
           Send
         </button>

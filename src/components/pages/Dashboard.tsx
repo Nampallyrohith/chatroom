@@ -25,41 +25,49 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="p-6 max-w-xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Your Chatrooms</h2>
-      <div className="flex gap-2 mb-4">
-        <input
-          className="border p-2 flex-1"
-          placeholder="New chatroom title"
-          value={newChatroom}
-          onChange={(e) => setNewChatroom(e.target.value)}
-        />
-        <button
-          className="bg-blue-600 text-white px-4 py-2"
-          onClick={createChatroom}
-        >
-          Create
-        </button>
-      </div>
-      <ul className="space-y-2">
-        {chatrooms.map((title) => (
-          <li
-            key={title}
-            className="border p-3 flex justify-between items-center"
+    <div className="p-6 bg-white text-black dark:bg-gray-900 dark:text-white min-h-screen">
+      <div className="max-w-xl mx-auto">
+        <h2 className="text-2xl font-bold mb-4">Your Chatrooms</h2>
+        <div className="flex gap-2 mb-4">
+          <input
+            className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white p-2 flex-1 rounded"
+            placeholder="New chatroom title"
+            value={newChatroom}
+            onChange={(e) => setNewChatroom(e.target.value)}
+          />
+          <button
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+            onClick={createChatroom}
           >
-            <Link to={`/chatroom/${encodeURIComponent(title)}`}>{title}</Link>
-            <button
-              onClick={() => {
-                deleteChatroom(title);
-                localStorage.removeItem(`chat-${title}`);
-              }}
-              className="text-red-500"
+            Create
+          </button>
+        </div>
+
+        <ul className="space-y-2">
+          {chatrooms.map((title) => (
+            <li
+              key={title}
+              className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 p-3 flex justify-between items-center rounded"
             >
-              Delete
-            </button>
-          </li>
-        ))}
-      </ul>
+              <Link
+                to={`/chatroom/${encodeURIComponent(title)}`}
+                className="hover:underline"
+              >
+                {title}
+              </Link>
+              <button
+                onClick={() => {
+                  deleteChatroom(title);
+                  localStorage.removeItem(`chat-${title}`);
+                }}
+                className="text-red-500 hover:underline"
+              >
+                Delete
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
