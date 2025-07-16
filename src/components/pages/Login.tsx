@@ -6,6 +6,7 @@ import { phoneSchema, type PhoneInput } from "../../models/schema";
 import { useFetchData } from "../../hooks/apiCall";
 import type { Country, FormattedCountry } from "../../models/typeDefinitions";
 import CountrySelector from "../../shared/CountrySelector";
+import { toast } from "sonner";
 // import CountrySelector from "../components/Auth/CountrySelector";
 
 const Login = () => {
@@ -50,52 +51,74 @@ const Login = () => {
   const onSubmit = (data: PhoneInput) => {
     setOtpSent(true);
     console.log(data);
+    toast.success(`OTP sent to ${data.phone}`);
     setTimeout(() => alert("OTP sent! Use 1234"), 1000);
   };
 
   const handleOtpVerify = () => {
     if (otp === "1234") {
       localStorage.setItem("loggedIn", "true");
+      toast.success("Login Successful.");
       navigate("/dashboard");
     } else {
-      alert("Invalid OTP");
+      toast.error("Invalid OTP");
     }
   };
 
   return (
-    <div className="p-4 max-w-md mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Login</h1>
-      {!otpSent ? (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <CountrySelector countries={countries} />
-          <input
-            type="text"
-            placeholder="Phone"
-            {...register("phone")}
-            className="border p-2 w-full"
-          />
-          {errors.phone && (
-            <p className="text-red-500 text-sm">{errors.phone.message}</p>
-          )}
-          <button className="bg-blue-600 text-white px-4 py-2">Send OTP</button>
-        </form>
-      ) : (
-        <div className="space-y-4">
-          <input
-            type="text"
-            placeholder="Enter OTP"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-            className="border p-2 w-full"
-          />
-          <button
-            onClick={handleOtpVerify}
-            className="bg-green-600 text-white px-4 py-2"
-          >
-            Verify OTP
-          </button>
-        </div>
-      )}
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-white to-purple-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
+      <div className="w-full max-w-md bg-white/80 dark:bg-white/5 backdrop-blur-md p-8 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+        <h1 className="text-3xl font-extrabold text-center text-gray-800 dark:text-gray-500 mb-6">
+          🔐 Login to Gemini
+        </h1>
+
+        {!otpSent ? (
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            {/* 🌍 Country Selector */}
+            <CountrySelector countries={countries} />
+
+            {/* 📞 Phone Input */}
+            <div>
+              <input
+                type="text"
+                placeholder="Enter phone number"
+                {...register("phone")}
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-900 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600 transition"
+              />
+              {errors.phone && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.phone.message}
+                </p>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-2 rounded hover:brightness-110 transition"
+            >
+              Send OTP
+            </button>
+          </form>
+        ) : (
+          <div className="space-y-5">
+            {/* 🔐 OTP Input */}
+            <input
+              type="text"
+              placeholder="Enter OTP (hint: 1234)"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-900 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-green-400 dark:focus:ring-green-600 transition"
+            />
+
+            <button
+              onClick={handleOtpVerify}
+              className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white py-2 rounded hover:brightness-110 transition"
+            >
+              Verify OTP
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
