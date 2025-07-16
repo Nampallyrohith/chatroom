@@ -31,6 +31,7 @@ const Chatroom = () => {
         console.error("Failed to parse messages from localStorage", e);
       }
     }
+    setLoading(false)
     setHasLoaded(true);
   }, [id]);
 

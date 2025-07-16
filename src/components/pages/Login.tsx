@@ -68,7 +68,7 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-white to-purple-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
       <div className="w-full max-w-md bg-white/80 dark:bg-white/5 backdrop-blur-md p-8 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
-        <h1 className="text-3xl font-extrabold text-center text-gray-800 dark:text-white mb-6">
+        <h1 className="text-3xl font-extrabold text-center text-gray-800 dark:text-gray-500 mb-6">
           🔐 Login to Gemini
         </h1>
 
