@@ -4,11 +4,11 @@ A fully responsive, beautifully styled AI chat interface built with **React**, *
 
 Deployed on 👉 **[Netlify](https://gemini-chatroom.netlify.app)**
 
-![alt text](image-1.png)
-![alt text](image-2.png)
-![alt text](image-3.png)
-![alt text](image-4.png)
-![alt text](image-5.png)
+![alt text](src/assets/screenshorts/image-1.png)
+![alt text](src/assets/screenshorts/image-2.png)
+![alt text](src/assets/screenshorts/image-3.png)
+![alt text](src/assets/screenshorts/image-4.png)
+![alt text](src/assets/screenshorts/image-5.png)
 
 ---
 
