@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import Loader from "../../shared/Loader";
 
+const PAGE_SIZE = 20;
+
 const Dashboard = () => {
   const [chatrooms, setChatrooms] = useState<string[]>([]);
   const [filteredChatrooms, setFilteredChatrooms] = useState<string[]>([]);
@@ -11,6 +13,7 @@ const Dashboard = () => {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Load chatrooms from localStorage
   useEffect(() => {
@@ -37,6 +40,7 @@ const Dashboard = () => {
       c.toLowerCase().includes(debouncedSearch.toLowerCase())
     );
     setFilteredChatrooms(filtered);
+    setCurrentPage(1);
   }, [debouncedSearch, chatrooms]);
 
   const createChatroom = () => {
@@ -57,13 +61,20 @@ const Dashboard = () => {
     toast.success("Deleted Chatroom.");
   };
 
+  // Pagination helpers
+  const totalPages = Math.ceil(filteredChatrooms.length / PAGE_SIZE);
+  const paginatedChatrooms = filteredChatrooms.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE
+  );
+
   if (loading) {
     return <Loader />;
   }
 
   return (
     <div className="h-screen px-4 py-8 bg-gradient-to-br from-[#f5f7fa] to-[#c3cfe2] dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
-      <div className="max-w-xl mx-auto backdrop-blur-md bg-white/80 dark:bg-white/5 rounded-xl shadow-lg p-6 transition">
+      <div className="max-w-xl h-fit mx-auto backdrop-blur-md bg-white/80 dark:bg-white/5 rounded-xl shadow-lg p-6 transition">
         <h2 className="text-3xl font-extrabold text-gray-800 dark:text-white mb-6 text-center">
           💬 Your Chatrooms
         </h2>
@@ -100,8 +111,8 @@ const Dashboard = () => {
         </div>
 
         {/* Chatroom List */}
-        <ul className="space-y-3">
-          {filteredChatrooms.map((title) => (
+        <ul className="flex flex-col gap-3">
+          {paginatedChatrooms.map((title) => (
             <li
               key={title}
               className="flex justify-between items-center p-3 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 rounded shadow hover:shadow-md transition"
@@ -130,6 +141,28 @@ const Dashboard = () => {
             </li>
           )}
         </ul>
+
+        {/* Pagination Controls */}
+
+        <div className="flex justify-center items-center gap-4 mt-4">
+          <button
+            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+            disabled={currentPage === 1}
+            className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 disabled:opacity-50"
+          >
+            Prev
+          </button>
+          <span className="text-sm">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+            disabled={currentPage === totalPages}
+            className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );

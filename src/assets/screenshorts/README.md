@@ -2,7 +2,7 @@
 
 A fully responsive, beautifully styled AI chat interface built with **React**, **TypeScript**, and **TailwindCSS**. Includes support for OTP-based login, country code selector, simulated AI replies, image upload, and a dark mode experience.
 
-Deployed on 👉 **[Netlify](https://gemini-chatroom.netlify.app )**
+Deployed on 👉 **[Netlify](https://gemini-chatroom.netlify.app)**
 
 ![alt text](image-1.png)
 ![alt text](image-2.png)
