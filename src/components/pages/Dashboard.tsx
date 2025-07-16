@@ -62,7 +62,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen px-4 py-8 bg-gradient-to-br from-[#f5f7fa] to-[#c3cfe2] dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
+    <div className="h-screen px-4 py-8 bg-gradient-to-br from-[#f5f7fa] to-[#c3cfe2] dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
       <div className="max-w-xl mx-auto backdrop-blur-md bg-white/80 dark:bg-white/5 rounded-xl shadow-lg p-6 transition">
         <h2 className="text-3xl font-extrabold text-gray-800 dark:text-white mb-6 text-center">
           💬 Your Chatrooms

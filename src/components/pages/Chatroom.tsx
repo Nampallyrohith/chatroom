@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import type { Message } from "../../models/typeDefinitions";
 import { toast } from "sonner";
-import Loader from "../../shared/Loader";
 import { ArrowLeft, SendHorizonal } from "lucide-react";
 import { FileUpload } from "../../shared/FileUpload";
+import { MessageSkeleton } from "../../shared/MessageSkeleton ";
 
 const Chatroom = () => {
   const { id } = useParams();
@@ -91,9 +91,6 @@ const Chatroom = () => {
     navigator.clipboard.writeText(text);
   };
 
-  if (loading) {
-    return <Loader />;
-  }
   return (
     <div className="min-h-screen flex justify-center bg-gradient-to-br from-white via-sky-50 to-purple-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-black dark:text-white transition-colors duration-300">
       <div className="flex flex-col w-full max-w-3xl border-x border-gray-200 dark:border-gray-700">
@@ -105,7 +102,18 @@ const Chatroom = () => {
         </header>
 
         <div className="flex flex-col w-full h-full overflow-y-auto p-4 space-y-2">
-          {messages.length === 0 ? (
+          {loading ? (
+            // Skeleton loader
+            <>
+              <MessageSkeleton isUser={true} />
+              <MessageSkeleton isUser={false} />
+              <MessageSkeleton isUser={false} />
+              <MessageSkeleton isUser={false} />
+              <MessageSkeleton isUser={false} />
+              <MessageSkeleton isUser={false} />
+            </>
+          ) : messages.length === 0 ? (
+            // Initial Intro
             <div className="flex items-center justify-center h-full">
               <div className="text-center border border-gray-200 dark:border-gray-700 rounded-lg p-6 bg-gray-50 dark:bg-gray-800">
                 <h2 className="text-xl font-semibold mb-2 text-gray-600 dark:text-gray-300">
@@ -120,6 +128,7 @@ const Chatroom = () => {
             </div>
           ) : (
             messages.map((msg, i) => (
+              // User and Gemini chat here
               <div
                 key={i}
                 className={`group relative p-3 rounded-md max-w-xs flex flex-col cursor-pointer ${
@@ -177,6 +186,7 @@ const Chatroom = () => {
           <div ref={chatEndRef} />
         </div>
 
+        {/* Message and image sender */}
         <div className="p-4 w-full flex-wrap sticky bottom-0 border-t h-20 border-gray-200 dark:border-gray-700 flex items-center gap-2 bg-white dark:bg-gray-900">
           <input
             className="flex-1 border border-gray-300 h-full dark:border-gray-600 rounded px-2 bg-white dark:bg-gray-800 text-black dark:text-white"

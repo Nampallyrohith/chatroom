@@ -6,6 +6,7 @@ import { phoneSchema, type PhoneInput } from "../../models/schema";
 import { useFetchData } from "../../hooks/apiCall";
 import type { Country, FormattedCountry } from "../../models/typeDefinitions";
 import CountrySelector from "../../shared/CountrySelector";
+import { toast } from "sonner";
 // import CountrySelector from "../components/Auth/CountrySelector";
 
 const Login = () => {
@@ -50,15 +51,17 @@ const Login = () => {
   const onSubmit = (data: PhoneInput) => {
     setOtpSent(true);
     console.log(data);
+    toast.success(`OTP sent to ${data.phone}`);
     setTimeout(() => alert("OTP sent! Use 1234"), 1000);
   };
 
   const handleOtpVerify = () => {
     if (otp === "1234") {
       localStorage.setItem("loggedIn", "true");
+      toast.success("Login Successful.");
       navigate("/dashboard");
     } else {
-      alert("Invalid OTP");
+      toast.error("Invalid OTP");
     }
   };
 
